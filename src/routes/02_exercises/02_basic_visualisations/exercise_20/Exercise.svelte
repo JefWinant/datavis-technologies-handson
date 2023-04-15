@@ -15,6 +15,7 @@
       { service: "Apple TV", viewers: 1.1 },
       { service: "Rakuten", viewers: 0.4 }
     ];
+    
   </script>
   
   <!-- setting a viewBox and max-width allows the SVG to shrink but not grow! -->
