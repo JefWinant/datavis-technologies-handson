@@ -10,29 +10,36 @@
     const values = [2, 4, 6, 7, 9];
 
     import {scaleLog} from 'd3-scale';
-    const Log = scaleLog()
-      .domain([2,9])
-      .range([100,700]);
+    let Log = scaleLog()
+      .domain([1,10])
+      .range([0,innerWidth]);
+    
     import {axisBottom} from 'd3-axis';
     import {select} from 'd3-selection';
-    const xAxis = axisBottom(Log)
-    function myFunction(handle){
-      const xAxis = axisBottom(Log)
+
+    function axisCreator(element){
+      const xAxis = axisBottom(Log);
+      xAxis(select(element));
     }
-
-
   </script>
   
   <svg viewBox="0 0 {width} {height}">
-    <g transform="translate({margin.left},{margin.top})" use:myFunction>
+    <g transform="translate({margin.left},{margin.top})">
       {#each values as value}
-        <circle cx="{Log(value)}" cy="50" r = 10/>
+        <circle cx="{Log(value)}" cy={innerHeight/2} r = 10/>
       {/each}
+      <text x={innerWidth/2} y={height-margin.top}> x axis </text>
     </g>
 
-    select('svg g').call(xAxis)
-    <g use:myFunction transform="translate(,{margin.top}+{innerHeight})">
-      xAxis(select(g))
-    </g>
+    <g transform="translate({margin.left},{innerHeight+margin.top})" use:axisCreator> </g>
   </svg>
   
+  <style>
+  circle {
+    fill: steelBlue;
+  }
+  text {
+    fill: currentColor;
+    font-size: 0.67em;
+  }
+  </style>
