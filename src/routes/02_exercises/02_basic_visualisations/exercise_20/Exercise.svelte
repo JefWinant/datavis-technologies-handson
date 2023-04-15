@@ -15,13 +15,29 @@
       { service: "Apple TV", viewers: 1.1 },
       { service: "Rakuten", viewers: 0.4 }
     ];
-    
+    const services = data.map(obj => obj["service"]);
+    import {scaleLinear,scaleOrdinal} from 'd3-scale';
+    let xscale = scaleOrdinal()
+      .domain(services)
+      .range([0,100,200,300,400,500,600]);
+    let yscale = scaleLinear()
+      .domain([0,3])
+      .range([0,innerHeight]);
+
+    import {axisLeft} from 'd3-axis';
+    function axisCreator(element){
+      const yAxis = axisLeft(yscale);
+      yAxis(select(element));
+    }
   </script>
   
   <!-- setting a viewBox and max-width allows the SVG to shrink but not grow! -->
   <svg viewbox="0 0 {width} {height}" style="max-width: {width}px">
     <g transform={`translate(${margin.left},${margin.top})`}>
-      <!--  -->
+      {#each data as stream}
+        <rect x="{xscale(stream.service)}" y="{innerHeight-yscale(stream.viewers)}" width = "50" height = "{yscale(stream.viewers)}"/>
+      {/each}
     </g>
+    <g transform="translate({0},{margin.top})" use:axisCreator></g>
   </svg>
   
