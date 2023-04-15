@@ -24,11 +24,17 @@
       .domain([0,3])
       .range([0,innerHeight]);
 
-    import {axisLeft} from 'd3-axis';
+    import {axisLeft,axisBottom} from 'd3-axis';
+
     function axisCreator(element){
       const yAxis = axisLeft(yscale);
       yAxis(select(element));
-    }
+    };
+  function axisCreator2(element){
+      const xAxis = axisBottom(xscale);
+      xAxis(select(element));
+    };
+
   </script>
   
   <!-- setting a viewBox and max-width allows the SVG to shrink but not grow! -->
@@ -38,6 +44,8 @@
         <rect x="{xscale(stream.service)}" y="{innerHeight-yscale(stream.viewers)}" width = "50" height = "{yscale(stream.viewers)}"/>
       {/each}
     </g>
-    <g transform="translate({0},{margin.top})" use:axisCreator></g>
+    <g transform={`translate({0},${margin.top}})`} use:axisCreator>
+    <text x=10 y={innerHeight/2} style="writing-mode: tb;"> y-axis</text>
+    </g>
+    <g transform={`translate({margin.left},${margin.top+innerHeight}})`} use:axisCreator2> </g>
   </svg>
-  
