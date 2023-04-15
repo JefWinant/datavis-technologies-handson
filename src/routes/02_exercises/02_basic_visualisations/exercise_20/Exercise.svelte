@@ -16,15 +16,16 @@
       { service: "Rakuten", viewers: 0.4 }
     ];
     const services = data.map(obj => obj["service"]);
-    import {scaleLinear,scaleOrdinal} from 'd3-scale';
-    let xscale = scaleOrdinal()
+    import {scaleLinear,scaleBand} from 'd3-scale';
+    const xscale = scaleBand()
       .domain(services)
-      .range([0,100,200,300,400,500,600]);
-    let yscale = scaleLinear()
+      .range([0,innerWidth]).paddingInner(0.8).paddingOuter(0.475);
+    const yscale = scaleLinear()
       .domain([0,3])
       .range([0,innerHeight]);
 
     import {axisLeft,axisBottom} from 'd3-axis';
+    import { select} from 'd3-selection';
 
     function axisCreator(element){
       const yAxis = axisLeft(yscale);
@@ -44,8 +45,11 @@
         <rect x="{xscale(stream.service)}" y="{innerHeight-yscale(stream.viewers)}" width = "50" height = "{yscale(stream.viewers)}"/>
       {/each}
     </g>
-    <g transform={`translate({0},${margin.top}})`} use:axisCreator>
-    <text x=10 y={innerHeight/2} style="writing-mode: tb;"> y-axis</text>
+    <g transform="translate({margin.left},{margin.top})" use:axisCreator>
     </g>
-    <g transform={`translate({margin.left},${margin.top+innerHeight}})`} use:axisCreator2> </g>
+    <g transform="translate({0},{margin.top})">
+      <text x=10 y={innerHeight/2} style="writing-mode: tb;"> y-axis</text>
+    </g>
+    <g transform="translate({margin.left},{margin.top+innerHeight})" use:axisCreator2> 
+    </g>
   </svg>
